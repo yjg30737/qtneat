@@ -9,7 +9,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
 
 setup(
     name='qtneat',
-    version='0.0.1',
+    version='0.0.2',
     author='Jung Gyu Yoon',
     author_email='yjg30737@gmail.com',
     license='MIT',
@@ -19,7 +19,7 @@ setup(
     long_description_content_type='text/markdown',
     long_description=long_description,
     install_requires=[
-        'pyqt_custom_titlebar_setter>=0.0.1',
-        'qt_sass_theme>=0.0.1'
+        'pyqt-custom-titlebar-setter>=0.0.1',
+        'qtsasstheme>=0.0.1'
     ]
 )
