@@ -12,6 +12,11 @@ I'll make this usable not only for PyQt5, but also for PyQt6 and PySide6.
 ## Requirements
 * PyQt5 >= 5.8
 
+## Included Packages
+* <a href="https://github.com/yjg30737/pyqt-custom-titlebar-setter">pyqt-custom-titlebar-setter</a>
+* <a href="https://github.com/yjg30737/qtsasstheme">qtsasstheme</a>
+* <a href="https://github.com/spyder-ide/qtpy">qtpy</a>
+
 ## Setup
 `python -m pip install qtneat`
 
