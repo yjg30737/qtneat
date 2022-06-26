@@ -5,6 +5,7 @@ from pyqt_custom_titlebar_setter import CustomTitlebarSetter
 from qt_sass_theme import QtSassTheme
 
 
+# for pyqt5
 def prepareQtApp():
     QCoreApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
