@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt, QCoreApplication
-from PyQt5.QtGui import QGuiApplication, QFont
-from PyQt5.QtWidgets import QApplication
+from qtpy.QtCore import Qt, QCoreApplication
+from qtpy.QtGui import QGuiApplication, QFont
+from qtpy.QtWidgets import QApplication
 from pyqt_custom_titlebar_setter import CustomTitlebarSetter
 from qt_sass_theme import QtSassTheme
 

@@ -21,5 +21,6 @@ setup(
     install_requires=[
         'pyqt-custom-titlebar-setter>=0.0.1',
         'qtsasstheme>=0.0.1'
+        'qtpy>=0.0.1'
     ]
 )
