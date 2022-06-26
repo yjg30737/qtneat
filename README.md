@@ -1,7 +1,7 @@
 # qtneat
 Set the Qt frameless titlebar/theme easily
 
-There is qtmodern, qtawesome, i choose the word "neat".
+There is qtmodern, qtawesome, i choose the word "<b>neat</b>".
 
 Tell me that naming is nice.
 
