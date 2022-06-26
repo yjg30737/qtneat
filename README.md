@@ -1,4 +1,6 @@
 # qtneat
+<b>DON'T USE IT</b>
+
 Set the Qt frameless titlebar/theme easily
 
 There is qtmodern, qtawesome, i chose the word "<b>neat</b>".
