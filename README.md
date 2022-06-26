@@ -7,8 +7,6 @@ Set the Qt frameless titlebar/theme easily
 * PyQt5 >= 5.8
 
 ## Included Packages
-* <a href="https://github.com/yjg30737/pyqt-custom-titlebar-setter">pyqt-custom-titlebar-setter</a>
-* <a href="https://github.com/yjg30737/qtsasstheme">qtsasstheme</a>
 * <a href="https://github.com/spyder-ide/qtpy">qtpy</a>
 
 ## Setup
