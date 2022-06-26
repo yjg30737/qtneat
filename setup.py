@@ -19,8 +19,6 @@ setup(
     long_description_content_type='text/markdown',
     long_description=long_description,
     install_requires=[
-        'pyqt-custom-titlebar-setter>=0.0.1',
-        'qtsasstheme>=0.0.1'
         'qtpy>=0.0.1'
     ]
 )
