@@ -1,5 +1,5 @@
 # qtneat
-<b>DON'T USE IT</b>
+<b>DON'T USE IT. I'M STILL WORKING</b>
 
 Set the Qt frameless titlebar/theme easily
 
