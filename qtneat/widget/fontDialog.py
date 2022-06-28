@@ -1,11 +1,10 @@
-from PyQt5.QtGui import QFontDatabase, QFont
 from PyQt5.QtWidgets import QLabel, QDialog, QSizePolicy, \
     QTextEdit, QApplication, QVBoxLayout, QWidget, QHBoxLayout, QPushButton
 from PyQt5.QtCore import Qt
 
-from pyqt_font_dialog.fontWidget import FontWidget
-from pyqt_font_dialog.sizeWidget import SizeWidget
-from pyqt_font_dialog.styleWidget import StyleWidget
+from fontDialogRes.fontWidget import FontWidget
+from fontDialogRes.sizeWidget import SizeWidget
+from fontDialogRes.styleWidget import StyleWidget
 
 
 class FontDialog(QDialog):
