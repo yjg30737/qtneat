@@ -1,1 +1,1 @@
-qtpy>=0.0.1
+qtawesome>=0.0.1

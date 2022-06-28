@@ -19,6 +19,6 @@ setup(
     long_description_content_type='text/markdown',
     long_description=long_description,
     install_requires=[
-        'qtpy>=0.0.1'
+        'qtawesome>=0.0.1'
     ]
 )
