@@ -19,6 +19,8 @@ setup(
     long_description_content_type='text/markdown',
     long_description=long_description,
     install_requires=[
-        'qtawesome>=0.0.1'
+        'qtawesome>=0.0.1',
+        'pyqt-svg-button>=0.0.1',
+        'pyqt-svg-icon-text-widget>=0.0.1'
     ]
 )

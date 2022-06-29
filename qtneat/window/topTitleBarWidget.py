@@ -1,7 +1,7 @@
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QPalette, QFont, QColor, qGray
 from qtpy.QtWidgets import QGridLayout, QWidget, QLabel, QFrame
-from ..widget.svgIconTextWidget import SvgIconTextWidget
+from pyqt_svg_icon_text_widget import SvgIconTextWidget
 
 
 class TopTitleBarWidget(QWidget):

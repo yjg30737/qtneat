@@ -8,7 +8,7 @@ from topTitleBarWidget import TopTitleBarWidget
 from windowsButtonsWidget import WindowsButtonsWidget
 from macButtonsWidget import MacButtonsWidget
 
-from ..widget.svgLabel import SvgLabel
+from pyqt_svg_label import SvgLabel
 
 
 class CustomTitlebarWindow(FramelessWindow):
