@@ -4,7 +4,7 @@ from qtpy.QtWidgets import QWidget, QHBoxLayout, QMainWindow
 from pyqt_svg_button import SvgButton
 
 
-class TitlebarButtonsWidget(QWidget):
+class CornerWidget(QWidget):
     def __init__(self, base_widget=None, hint: list = ['min', 'max', 'close']):
         super().__init__()
         self.__initVal(base_widget, hint)

@@ -3,10 +3,10 @@ from qtpy.QtGui import QPalette, QFont, QIcon
 from qtpy.QtWidgets import QHBoxLayout, QGridLayout, QWidget, QMainWindow, QPushButton, QLabel, \
     QMenuBar, QToolButton, qApp, QSizePolicy
 
-from framelessWindow import FramelessWindow
-from topTitleBarWidget import TopTitleBarWidget
-from windowsButtonsWidget import WindowsButtonsWidget
-from macButtonsWidget import MacButtonsWidget
+from baseWindow import FramelessWindow
+from titleBar import TopTitleBarWidget
+from windowsCornerWidget import WindowsCornerWidget
+from macCornerWidget import MacCornerWidget
 
 from pyqt_svg_label import SvgLabel
 
@@ -181,9 +181,9 @@ class CustomTitlebarWindow(FramelessWindow):
             pass
         else:
             if self.__style == 'windows':
-                btnWidget = WindowsButtonsWidget(widget, self.__btnHint)
+                btnWidget = WindowsCornerWidget(widget, self.__btnHint)
             elif self.__style == 'mac':
-                btnWidget = MacButtonsWidget(widget, self.__btnHint)
+                btnWidget = MacCornerWidget(widget, self.__btnHint)
         return btnWidget
 
     # btnWidget(user-customized button widget), currently being developed
@@ -192,9 +192,9 @@ class CustomTitlebarWindow(FramelessWindow):
         if isinstance(self.__topTitleBar, TopTitleBarWidget):
             self.__btnWidget = self.__getProperButtonsWidget(self.__topTitleBar, btnWidget)
 
-            if isinstance(self.__btnWidget, WindowsButtonsWidget):
+            if isinstance(self.__btnWidget, WindowsCornerWidget):
                 align = Qt.AlignRight
-            elif isinstance(self.__btnWidget, MacButtonsWidget):
+            elif isinstance(self.__btnWidget, MacCornerWidget):
                 align = Qt.AlignLeft
 
             self.__topTitleBar.setButtons(self.__btnWidget, align)

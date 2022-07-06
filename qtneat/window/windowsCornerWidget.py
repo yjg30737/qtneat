@@ -1,8 +1,8 @@
 from qtpy.QtWidgets import QWidget
-from titlebarButtonsWidget import TitlebarButtonsWidget
+from cornerWidget import CornerWidget
 
 
-class WindowsButtonsWidget(TitlebarButtonsWidget):
+class WindowsCornerWidget(CornerWidget):
     def __init__(self, base_widget: QWidget, hint: list = ['min', 'max', 'close']):
         super().__init__(base_widget, hint)
         self.__initUi()

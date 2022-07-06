@@ -1,9 +1,9 @@
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import qApp
-from titlebarButtonsWidget import TitlebarButtonsWidget
+from cornerWidget import CornerWidget
 
 
-class MacButtonsWidget(TitlebarButtonsWidget):
+class MacCornerWidget(CornerWidget):
     def __init__(self, base_widget=None, hint=['min', 'max', 'close']):
         super().__init__(base_widget, hint)
         self.__size = qApp.font().pointSize()
