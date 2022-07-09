@@ -198,7 +198,7 @@ class CustomTitlebarWindow(FramelessWindow):
             elif isinstance(self.__btnWidget, MacCornerWidget):
                 align = Qt.AlignLeft
 
-            self.__topTitleBar.setButtons(self.__btnWidget, align)
+            self.__topTitleBar.setCornerWidget(self.__btnWidget, align)
             iconTitleWidget = self.__topTitleBar.getIconTitleWidget()
             self.initTitleEvent(iconTitleWidget)
             self.initButtonsEvent()

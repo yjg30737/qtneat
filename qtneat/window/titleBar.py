@@ -17,7 +17,7 @@ class TopTitleBarWidget(QWidget):
         self.__svgIconTitleWidget = ''
         self.__iconLbl = QLabel()
         self.__titleLbl = QLabel()
-        self.__btnWidget = ''
+        self.__cornerWidget = ''
         self.__separator = QFrame()
 
     def __getTitleTextColor(self, base_color):
@@ -71,15 +71,15 @@ class TopTitleBarWidget(QWidget):
         lay.setSpacing(3)
         self.setLayout(lay)
 
-    def setButtons(self, btnWidget, align=Qt.AlignRight):
+    def setCornerWidget(self, cornerWidget, align=Qt.AlignRight):
         lay = self.layout()
-        self.__btnWidget = btnWidget
+        self.__cornerWidget = cornerWidget
         w = h = self.__titleLbl.fontMetrics().height() * 1.25
-        self.__btnWidget.setButtonSize(w, h)
+        self.__cornerWidget.setButtonSize(w, h)
         if align == Qt.AlignRight:
-            lay.addWidget(self.__btnWidget, 0, 1, 1, 1, alignment=align)
+            lay.addWidget(self.__cornerWidget, 0, 1, 1, 1, alignment=align)
         elif align == Qt.AlignLeft:
-            lay.addWidget(self.__btnWidget, 0, 0, 1, 1, alignment=align)
+            lay.addWidget(self.__cornerWidget, 0, 0, 1, 1, alignment=align)
 
     def setBottomSeparator(self):
         lay = self.layout()
@@ -91,11 +91,11 @@ class TopTitleBarWidget(QWidget):
     def getIconTitleWidget(self):
         return self.__svgIconTitleWidget
 
-    def getIconLbl(self):
+    def getIcon(self):
         return self.__iconLbl
 
-    def getTitleLbl(self):
+    def getTitle(self):
         return self.__titleLbl
 
-    def getBtnWidget(self):
-        return self.__btnWidget
+    def getCornerWidget(self):
+        return self.__cornerWidget
