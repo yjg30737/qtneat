@@ -4,6 +4,7 @@ from qtpy.QtWidgets import QHBoxLayout, QGridLayout, QWidget, QMainWindow, QPush
     QMenuBar, QToolButton, qApp, QSizePolicy
 
 from baseWindow import FramelessWindow
+from qtneat.window import MenuBar
 from titleBar import TopTitleBarWidget
 from windowsCornerWidget import WindowsCornerWidget
 from macCornerWidget import MacCornerWidget
@@ -248,24 +249,12 @@ class CustomTitlebarWindow(FramelessWindow):
     def setMenuTitle(self, title: str = '', icon_filename: str = '', font: QFont = QFont('Arial', 9)):
         # set menu title
         title = self.__getWindowTitle(title)
-        self.__titleLbl.setText(title)
-        self.__titleLbl.setFont(font)
-        self.__titleLbl.setMinimumHeight(self.__menubar.height())
-        cornerWidget = self.__menubar.cornerWidget()
-        if cornerWidget:
-            lay = cornerWidget.layout()
-            if lay:
-                lay.insertWidget(0, self.__titleLbl)
-        else:
-            self.__menubar.setCornerWidget(self.__titleLbl, Qt.TopRightCorner)
+        self.__menubar = MenuBar()
+        self.__menubar.setTitle(title, font)
+        self.__menubar.setIcon(icon_filename)
+        self.__titleLbl = self.__menubar.getTitle()
+        self.__iconLbl = self.__menubar.getIcon()
         self.setWindowTitle(title)
-
-        # set menu icon
-        self.__iconLbl = SvgLabel()
-        self.__iconLbl.setSvgFile(icon_filename)
-        w = h = self.__titleLbl.font().pointSize()*2*qApp.screens()[0].logicalDotsPerInch()/96.0
-        self.__iconLbl.setFixedSize(w, h)
-        self.__menubar.setCornerWidget(self.__iconLbl, Qt.TopLeftCorner)
         self.__setWindowIcon(icon_filename)
 
     def setTopTitleBar(self, title: str = '', icon_filename: str = '', font: QFont = QFont('Arial', 14),
