@@ -18,6 +18,16 @@ class MenuBar(QtWidgets.QMenuBar):
     def __initUi(self):
         pass
 
+    def __showMenu(self):
+        self.__menuAnimation.setDirection(QtCore.QAbstractAnimation.Backward)
+        self.__menuAnimation.start()
+        self.__isHiding = False
+
+    def __hideMenu(self):
+        self.__menuAnimation.setDirection(QtCore.QAbstractAnimation.Forward)
+        self.__menuAnimation.start()
+        self.__isHiding = True
+
     def setTitle(self, title: str, font: QtGui.QFont = QtGui.QFont('Arial', 9)):
         self.__titleLbl.setText(title)
         self.__titleLbl.setFont(font)
@@ -38,6 +48,12 @@ class MenuBar(QtWidgets.QMenuBar):
     def setIcon(self, icon: str):
         self.__iconLbl.setSvgFile(icon)
         self.setCornerWidget(self.__iconLbl, QtCore.Qt.TopLeftCorner)
+
+    def getTitle(self) -> QtWidgets.QLabel:
+        return self.__titleLbl
+
+    def getIcon(self) -> SvgLabel:
+        return self.__iconLbl
 
     def setHidable(self, flag: bool):
         self.__isHidable = flag
@@ -69,16 +85,6 @@ class MenuBar(QtWidgets.QMenuBar):
         self.__menuAnimation.setStartValue(height)
         self.__menuAnimation.setDuration(200)  # default duration
         self.__menuAnimation.setEndValue(1)  # default end value
-
-    def __showMenu(self):
-        self.__menuAnimation.setDirection(QtCore.QAbstractAnimation.Backward)
-        self.__menuAnimation.start()
-        self.__isHiding = False
-
-    def __hideMenu(self):
-        self.__menuAnimation.setDirection(QtCore.QAbstractAnimation.Forward)
-        self.__menuAnimation.start()
-        self.__isHiding = True
 
     def enterEvent(self, e):
         if self.__isHidable and self.__isHiding:
