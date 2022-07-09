@@ -5,3 +5,4 @@ from .menuBar import MenuBar
 from .cornerWidget import CornerWidget
 from .macCornerWidget import MacCornerWidget
 from .windowsCornerWidget import WindowsCornerWidget
+from .icons import *
