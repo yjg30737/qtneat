@@ -9,8 +9,6 @@ from titleBar import TopTitleBarWidget
 from windowsCornerWidget import WindowsCornerWidget
 from macCornerWidget import MacCornerWidget
 
-from pyqt_svg_label import SvgLabel
-
 
 class CustomTitlebarWindow(FramelessWindow):
     def __init__(self, widget: QWidget):
@@ -19,8 +17,6 @@ class CustomTitlebarWindow(FramelessWindow):
         self.__initUi()
 
     def __initVal(self, widget):
-        self.setObjectName('titleBar')
-
         self.__widget = widget
         self.__widget.setObjectName('mainWidget')
         self.__menubar = ''
@@ -62,12 +58,13 @@ class CustomTitlebarWindow(FramelessWindow):
 
         self.__modernizeAppFont()
 
+        # set frame color
         if isinstance(self.__menubar, QMenuBar):
             color = self.__menubar.palette().color(QPalette.Base)
             self.__initMenuBar()
         else:
             color = self.__widget.palette().color(QPalette.Base)
-        self.setStyleSheet(f'QWidget#titleBar {{ background-color: {color.name()} }}')
+        self.setFrameColor(color)
 
     def __initMenuBar(self):
         self.__menubar.installEventFilter(self)
