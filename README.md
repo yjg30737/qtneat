@@ -7,7 +7,9 @@ Set the Qt frameless titlebar/theme easily
 * PyQt5 >= 5.8
 
 ## Included Packages
-* <a href="https://github.com/spyder-ide/qtpy">qtpy</a>
+* <a href="https://github.com/spyder-ide/qtawesome">qtawesome</a>
+* <a href="https://github.com/yjg30737/pyqt-svg-button">pyqt-svg-button</a>
+* <a href="https://github.com/yjg30737/pyqt-svg-icon-text-widget">pyqt-svg-icon-text-widget</a>
 
 ## Setup
 `python -m pip install qtneat`
