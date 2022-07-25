@@ -3,7 +3,7 @@ from qtpy.QtGui import QCursor, QPalette, QBrush, QColor
 from qtpy.QtWidgets import QWidget
 
 
-class FramelessWindow(QWidget):
+class BaseWindow(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__()
         self._resizing = False

@@ -4,7 +4,7 @@ from qtpy.QtWidgets import QGridLayout, QWidget, QLabel, QFrame
 from pyqt_svg_icon_text_widget import SvgIconTextWidget
 
 
-class TopTitleBarWidget(QWidget):
+class TitleBar(QWidget):
     def __init__(self, base_widget: QWidget, text: str = '', font: QFont = QFont('Arial', 14),
                  icon_filename: str = None,
                  align=Qt.AlignCenter):

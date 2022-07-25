@@ -3,14 +3,14 @@ from qtpy.QtGui import QPalette, QFont, QIcon
 from qtpy.QtWidgets import QHBoxLayout, QGridLayout, QWidget, QMainWindow, QPushButton, QLabel, \
     QMenuBar, QToolButton, qApp, QSizePolicy
 
-from baseWindow import FramelessWindow
+from baseWindow import BaseWindow
 from qtneat.window import MenuBar
-from titleBar import TopTitleBarWidget
+from titleBar import TitleBar
 from windowsCornerWidget import WindowsCornerWidget
 from macCornerWidget import MacCornerWidget
 
 
-class CustomTitlebarWindow(FramelessWindow):
+class Window(BaseWindow):
     def __init__(self, widget: QWidget):
         super().__init__(widget)
         self.__initVal(widget)
@@ -122,7 +122,7 @@ class CustomTitlebarWindow(FramelessWindow):
                         self.__titleLbl.setStyleSheet(f'QWidget {{ background-color: {color.name()} }};')
 
             # catch the titlebar double click or mouse move event
-            elif isinstance(obj, TopTitleBarWidget):
+            elif isinstance(obj, TitleBar):
                 if e.type() == 4 or e.type() == 5:
                     self.__execTitleBarMoveOrDoubleClickEvent(e)
         return super().eventFilter(obj, e)
@@ -131,11 +131,11 @@ class CustomTitlebarWindow(FramelessWindow):
         inner_state = int(e.oldState())
         if inner_state == 0 or inner_state == 4:
             if inner_state == 0:
-                if isinstance(self.__topTitleBar, TopTitleBarWidget):
+                if isinstance(self.__topTitleBar, TitleBar):
                     self.__topTitleBar.hide()
                 self.showFullScreen()
             else:
-                if isinstance(self.__topTitleBar, TopTitleBarWidget):
+                if isinstance(self.__topTitleBar, TitleBar):
                     self.__topTitleBar.show()
                 self.showNormal()
             title_bar_state = self.windowState()
@@ -187,7 +187,7 @@ class CustomTitlebarWindow(FramelessWindow):
     # btnWidget(user-customized button widget), currently being developed
     def setButtons(self, btnWidget=None, align=Qt.AlignRight):
         # If window has a TopTitleBarWidget
-        if isinstance(self.__topTitleBar, TopTitleBarWidget):
+        if isinstance(self.__topTitleBar, TitleBar):
             self.__btnWidget = self.__getProperButtonsWidget(self.__topTitleBar, btnWidget)
 
             if isinstance(self.__btnWidget, WindowsCornerWidget):
@@ -260,12 +260,12 @@ class CustomTitlebarWindow(FramelessWindow):
         self.__setWindowIcon(icon_filename)
 
         if isinstance(self.__menubar, QMenuBar):
-            self.__topTitleBar = TopTitleBarWidget(self.__menubar, text=title, font=font, icon_filename=icon_filename,
-                                                   align=align)
+            self.__topTitleBar = TitleBar(self.__menubar, text=title, font=font, icon_filename=icon_filename,
+                                          align=align)
             self.__menubar.removeEventFilter(self)
         else:
-            self.__topTitleBar = TopTitleBarWidget(self.__widget, text=title, font=font, icon_filename=icon_filename,
-                                                   align=align)
+            self.__topTitleBar = TitleBar(self.__widget, text=title, font=font, icon_filename=icon_filename,
+                                          align=align)
         self.__topTitleBar.installEventFilter(self)
         self.__topTitleBar.setObjectName('navWidget')
         if bottom_separator:
