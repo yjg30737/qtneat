@@ -1,13 +1,11 @@
 from qtpy.QtCore import Qt, QCoreApplication
 from qtpy.QtGui import QGuiApplication, QFont
 from qtpy.QtWidgets import QApplication, QWidget
-from pyqt_custom_titlebar_setter import CustomTitlebarSetter
 from qt_sass_theme import QtSassTheme
-
-# for pyqt5
 from qtneat.window import Window
 
 
+# for pyqt5
 def prepareQtApp():
     QCoreApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     QGuiApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
@@ -38,13 +36,13 @@ class QtAppManager:
     def setTitleBar(self, icon_filename: str = '', font: QFont = QFont('Arial', 14),
                     hint: list = ['min', 'max', 'close'], align=Qt.AlignCenter,
                     bottom_separator: bool = False):
-        self.__mainWindow = CustomTitlebarSetter.getCustomTitleBarWindow(main_window=self.__innerWidget,
-                                                                        title='',
-                                                                        icon_filename=icon_filename,
-                                                                        font=font,
-                                                                        hint=hint,
-                                                                        align=align,
-                                                                        bottom_separator=bottom_separator)
+        self.__mainWindow = self.__getStandardWindow(main_window=self.__innerWidget,
+                                                     title='',
+                                                     icon_filename=icon_filename,
+                                                     font=font,
+                                                     hint=hint,
+                                                     align=align,
+                                                     bottom_separator=bottom_separator)
 
     def show(self):
         if self.__mainWindow:
