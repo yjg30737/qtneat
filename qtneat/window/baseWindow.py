@@ -1,7 +1,8 @@
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QCursor, QPalette, QBrush, QColor
-from qtpy.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget, QDesktopWidget
 
+# todo prevent resizing when window is in the maximum/full screen
 
 class BaseWindow(QWidget):
     def __init__(self, *args, **kwargs):
@@ -12,6 +13,9 @@ class BaseWindow(QWidget):
         self._margin = 3
         self._cursor = QCursor()
         self._pressToMove = False
+        self._verticalExpanded = False
+        self._originalY = 0
+        self._originalHeightBeforeExpand = 0
 
         self.__initPosition()
         self.__initBasicUi()
@@ -86,6 +90,50 @@ class BaseWindow(QWidget):
                 if self._pressToMove:
                     self._move()
         return super().mousePressEvent(e)
+
+    def mouseDoubleClickEvent(self, e):
+        p = e.pos()
+
+        rect = self.rect()
+        rect.setX(self.rect().x() + self._margin)
+        rect.setY(self.rect().y() + self._margin)
+        rect.setWidth(self.rect().width() - self._margin * 2)
+        rect.setHeight(self.rect().height() - self._margin * 2)
+
+        y = p.y()
+
+        y1 = self.rect().y()
+        y2 = self.rect().height()
+
+        top = abs(y - y1) <= self._margin # far top
+        bottom = abs(y - (y2 + y1)) <= self._margin # far bottom
+
+        ag = QDesktopWidget().availableGeometry()
+
+        # fixme minor bug - resizing after expand can lead to inappropriate result when in comes to expanding again, it should be fixed
+        # vertical expanding when double-clicking either top or bottom edge
+        # back to normal
+        if self._verticalExpanded:
+            if top or bottom:
+                self.move(self.x(), self._originalY)
+                self.resize(self.width(), self._originalHeightBeforeExpand)
+                self._verticalExpanded = False
+        # expand vertically
+        else:
+            if top or bottom:
+                self._verticalExpanded = True
+                min_size = self.minimumSize()
+                max_size = self.maximumSize()
+                geo = self.geometry()
+                self._originalY = geo.y()
+                self._originalHeightBeforeExpand = geo.height()
+                geo.moveTop(0)
+                self.setGeometry(geo)
+                self.setFixedHeight(ag.height()-2)
+                self.setMinimumSize(min_size)
+                self.setMaximumSize(max_size)
+
+        return super().mouseDoubleClickEvent(e)
 
     def mouseMoveEvent(self, e):
         if self.isResizable():
