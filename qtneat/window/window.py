@@ -88,11 +88,10 @@ class Window(BaseWindow):
 
     def eventFilter(self, obj, e) -> bool:
         if obj == self:
-            # catch resize event or window state change event
-            if e.type() == 14 or e.type() == 105:
-                # prevent the problem that top title bar window is not visible when full screen turning off
-                if e.type() == 105:
-                    if int(e.oldState()) == 4:
+            # prevent the problem that top title bar window is not visible when full screen turning off
+            if e.type() == 105:
+                if int(e.oldState()) == 4:
+                    if isinstance(self.__topTitleBar, TitleBar):
                         self.__topTitleBar.show()
         # catch full screen toggle event
         if obj.objectName() == 'mainWidget':
