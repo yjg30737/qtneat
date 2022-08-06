@@ -1,9 +1,9 @@
 from qtpy.QtCore import Qt
-from qtpy.QtGui import QCursor, QPalette, QBrush, QColor
-from qtpy.QtWidgets import QWidget, QDesktopWidget
+from qtpy.QtGui import QCursor, QPalette, QBrush, QColor, QScreen
+from qtpy.QtWidgets import QWidget
 
 
-class BaseWindow(QWidget):
+class FramelessWindow(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__()
         self._resizing = False
@@ -61,10 +61,10 @@ class BaseWindow(QWidget):
                     x2 = self.rect().width()
                     y2 = self.rect().height()
 
-                    self.__left = abs(x - x1) <= self._margin  # if mouse cursor is at the almost far left
-                    self.__top = abs(y - y1) <= self._margin  # far top
-                    self.__right = abs(x - (x2 + x1)) <= self._margin  # far right
-                    self.__bottom = abs(y - (y2 + y1)) <= self._margin  # far bottom
+                    self.__left = abs(x - x1) <= self._margin # if mouse cursor is at the almost far left
+                    self.__top = abs(y - y1) <= self._margin # far top
+                    self.__right = abs(x - (x2 + x1)) <= self._margin # far right
+                    self.__bottom = abs(y - (y2 + y1)) <= self._margin # far bottom
 
                     # set the cursor shape based on flag above
                     if self.__top and self.__left:
@@ -111,10 +111,10 @@ class BaseWindow(QWidget):
             y1 = self.rect().y()
             y2 = self.rect().height()
 
-            top = abs(y - y1) <= self._margin  # far top
-            bottom = abs(y - (y2 + y1)) <= self._margin  # far bottom
+            top = abs(y - y1) <= self._margin # far top
+            bottom = abs(y - (y2 + y1)) <= self._margin # far bottom
 
-            ag = QDesktopWidget().availableGeometry()
+            ag = QScreen().availableGeometry()
 
             # fixme minor bug - resizing after expand can lead to inappropriate result when in comes to expanding again, it should be fixed
             # vertical expanding when double-clicking either top or bottom edge
@@ -135,7 +135,7 @@ class BaseWindow(QWidget):
                     self._originalHeightBeforeExpand = geo.height()
                     geo.moveTop(0)
                     self.setGeometry(geo)
-                    self.setFixedHeight(ag.height() - 2)
+                    self.setFixedHeight(ag.height()-2)
                     self.setMinimumSize(min_size)
                     self.setMaximumSize(max_size)
 
