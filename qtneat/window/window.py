@@ -1,16 +1,19 @@
-from qtpy.QtCore import Qt
-from qtpy.QtGui import QPalette, QFont, QIcon
-from qtpy.QtWidgets import QHBoxLayout, QGridLayout, QWidget, QMainWindow, QPushButton, QLabel, \
-    QMenuBar, QToolButton, qApp, QSizePolicy
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPalette, QFont, QIcon
+from PyQt5.QtWidgets import QHBoxLayout, QGridLayout, QWidget, QMainWindow, QPushButton, QLabel, \
+    QMenuBar, QToolButton, QSizePolicy, QApplication
 
-from baseWindow import BaseWindow
-from qtneat.window import MenuBar
-from titleBar import TitleBar
-from windowsCornerWidget import WindowsCornerWidget
-from macCornerWidget import MacCornerWidget
+from pyqt_frameless_window.framelessWindow import FramelessWindow
+
+from pyqt_top_titlebar_widget import TopTitleBarWidget
+
+from pyqt_svg_label import SvgLabel
+
+from pyqt_windows_buttons_widget import WindowsButtonsWidget
+from pyqt_mac_buttons_widget import MacButtonsWidget
 
 
-class Window(BaseWindow):
+class CustomTitlebarWindow(FramelessWindow):
     def __init__(self, widget: QWidget):
         super().__init__(widget)
         self.__initVal(widget)
@@ -39,7 +42,7 @@ class Window(BaseWindow):
         self.__maximizeBtn = QPushButton()
         self.__closeBtn = QPushButton()
 
-        self.__style = qApp.platformName()
+        self.__style = QApplication.platformName()
         if self.__style == 'windows' or self.__style == 'mac':
             pass
         else:
@@ -50,6 +53,8 @@ class Window(BaseWindow):
         self.installEventFilter(self)
 
         # connect the close event with inner widget
+        self.closeEvent = self.__widget.closeEvent
+
         lay = QGridLayout()
         lay.addWidget(self.__widget)
         lay.setContentsMargins(self._margin, self._margin, self._margin, self._margin)
@@ -74,24 +79,24 @@ class Window(BaseWindow):
     # modernize the application
     def __modernizeAppFont(self):
         # modernize the font
-        appFont = qApp.font()
+        appFont = QApplication.font()
         # font family: arial
         appFont.setFamily('Arial')
         # font size: 9~12
-        appFont.setPointSize(min(12, max(9, appFont.pointSize() * qApp.desktop().logicalDpiX()/96.0)))
+        appFont.setPointSize(min(12, max(9, appFont.pointSize() * QApplication.desktop().logicalDpiX()/96.0)))
         # font style strategy: antialiasing
         appFont.setStyleStrategy(QFont.PreferAntialias)
-        qApp.setFont(appFont)
+        QApplication.setFont(appFont)
         # fade menu and tooltip
-        qApp.setEffectEnabled(Qt.UI_FadeMenu, True)
-        qApp.setEffectEnabled(Qt.UI_FadeTooltip, True)
+        QApplication.setEffectEnabled(Qt.UI_FadeMenu, True)
+        QApplication.setEffectEnabled(Qt.UI_FadeTooltip, True)
 
     def eventFilter(self, obj, e) -> bool:
         if obj == self:
             # prevent the problem that top title bar window is not visible when full screen turning off
             if e.type() == 105:
                 if int(e.oldState()) == 4:
-                    if isinstance(self.__topTitleBar, TitleBar):
+                    if isinstance(self.__topTitleBar, TopTitleBarWidget):
                         self.__topTitleBar.show()
         # catch full screen toggle event
         if obj.objectName() == 'mainWidget':
@@ -99,14 +104,15 @@ class Window(BaseWindow):
                 self.close()
             if e.type() == 105:
                 self.__toggleFullScreenFromInnerWidget(e)
-
+            # catch the title change event
+            if e.type() == 33:
+                title = obj.windowTitle()
+                self.__titleLbl.setText(title)
+                self.setWindowTitle(title)
         # catch the enter event
         if e.type() == 10:
             self.unsetCursor()
             self._resizing = False
-        # catch the title change event
-        if e.type() == 33:
-            self.__titleLbl.setText(obj.windowTitle())
         if obj.objectName() == 'navWidget':
             # catch the menubar double click or mouse move event
             if isinstance(obj, QMenuBar):
@@ -121,7 +127,7 @@ class Window(BaseWindow):
                         self.__titleLbl.setStyleSheet(f'QWidget {{ background-color: {color.name()} }};')
 
             # catch the titlebar double click or mouse move event
-            elif isinstance(obj, TitleBar):
+            elif isinstance(obj, TopTitleBarWidget):
                 if e.type() == 4 or e.type() == 5:
                     self.__execTitleBarMoveOrDoubleClickEvent(e)
         return super().eventFilter(obj, e)
@@ -130,11 +136,11 @@ class Window(BaseWindow):
         inner_state = int(e.oldState())
         if inner_state == 0 or inner_state == 4:
             if inner_state == 0:
-                if isinstance(self.__topTitleBar, TitleBar):
+                if isinstance(self.__topTitleBar, TopTitleBarWidget):
                     self.__topTitleBar.hide()
                 self.showFullScreen()
             else:
-                if isinstance(self.__topTitleBar, TitleBar):
+                if isinstance(self.__topTitleBar, TopTitleBarWidget):
                     self.__topTitleBar.show()
                 self.showNormal()
             title_bar_state = self.windowState()
@@ -178,23 +184,26 @@ class Window(BaseWindow):
             pass
         else:
             if self.__style == 'windows':
-                btnWidget = WindowsCornerWidget(widget, self.__btnHint)
+                btnWidget = WindowsButtonsWidget(widget, self.__btnHint)
             elif self.__style == 'mac':
-                btnWidget = MacCornerWidget(widget, self.__btnHint)
+                btnWidget = MacButtonsWidget(widget, self.__btnHint)
         return btnWidget
 
     # btnWidget(user-customized button widget), currently being developed
     def setButtons(self, btnWidget=None, align=Qt.AlignRight):
         # If window has a TopTitleBarWidget
-        if isinstance(self.__topTitleBar, TitleBar):
+        if isinstance(self.__topTitleBar, TopTitleBarWidget):
             self.__btnWidget = self.__getProperButtonsWidget(self.__topTitleBar, btnWidget)
 
-            if isinstance(self.__btnWidget, WindowsCornerWidget):
+            # set proper align value based on type of buttons widget (temporary code)
+            # fixme start
+            if isinstance(self.__btnWidget, WindowsButtonsWidget):
                 align = Qt.AlignRight
-            elif isinstance(self.__btnWidget, MacCornerWidget):
+            elif isinstance(self.__btnWidget, MacButtonsWidget):
                 align = Qt.AlignLeft
+            # end
 
-            self.__topTitleBar.setCornerWidget(self.__btnWidget, align)
+            self.__topTitleBar.setButtons(self.__btnWidget, align)
             iconTitleWidget = self.__topTitleBar.getIconTitleWidget()
             self.initTitleEvent(iconTitleWidget)
             self.initButtonsEvent()
@@ -206,7 +215,7 @@ class Window(BaseWindow):
             self.initButtonsEvent()
             lay.addWidget(self.__btnWidget)
 
-            w = h = self.__titleLbl.font().pointSize() * 3 * qApp.screens()[0].logicalDotsPerInch()/96.0
+            w = h = self.__titleLbl.font().pointSize() * 3 * QApplication.screens()[0].logicalDotsPerInch()/96.0
             self.__btnWidget.setButtonSize(w, h)
 
             cornerWidget = QWidget()
@@ -242,29 +251,52 @@ class Window(BaseWindow):
         icon_filename = self.__getWindowIcon(icon_filename)
         self.setWindowIcon(QIcon(icon_filename))
 
-    def setMenuTitle(self, title: str = '', icon_filename: str = '', font: QFont = QFont('Arial', 9)):
-        # set menu title
+    def __setMenuTitle(self, title, font):
+        self.__titleLbl.setText(title)
+        self.__titleLbl.setFont(font)
+        self.__titleLbl.setMinimumHeight(self.__menubar.height())
+        cornerWidget = self.__menubar.cornerWidget()
+        if cornerWidget:
+            lay = cornerWidget.layout()
+            if lay:
+                lay.insertWidget(0, self.__titleLbl)
+        else:
+            self.__menubar.setCornerWidget(self.__titleLbl, Qt.TopRightCorner)
+
+    def __setMenuIcon(self, icon_filename):
+        self.__iconLbl = SvgLabel()
+        self.__iconLbl.setSvgFile(icon_filename)
+        w = h = self.__titleLbl.font().pointSize()*2*QApplication.screens()[0].logicalDotsPerInch()/96.0
+        self.__iconLbl.setFixedSize(w, h)
+        lay = QHBoxLayout()
+        lay.addWidget(self.__iconLbl)
+        lay.setContentsMargins(5, 0, 0, 0)
+        leftCornerWidget = QWidget()
+        leftCornerWidget.setLayout(lay)
+        self.__menubar.setCornerWidget(leftCornerWidget, Qt.TopLeftCorner)
+
+    def setMenuAsTitleBar(self, title: str = '', icon_filename: str = '', font: QFont = QFont('Arial', 9)):
         title = self.__getWindowTitle(title)
-        self.__menubar = MenuBar()
-        self.__menubar.setTitle(title, font)
-        self.__menubar.setIcon(icon_filename)
-        self.__titleLbl = self.__menubar.getTitle()
-        self.__iconLbl = self.__menubar.getIcon()
         self.setWindowTitle(title)
         self.__setWindowIcon(icon_filename)
+        # set menu title
+        self.__setMenuTitle(title, font)
+        # set menu icon
+        self.__setMenuIcon(icon_filename)
 
     def setTopTitleBar(self, title: str = '', icon_filename: str = '', font: QFont = QFont('Arial', 14),
                        align=Qt.AlignCenter, bottom_separator: bool = False):
         title = self.__getWindowTitle(title)
+        self.setWindowTitle(title)
         self.__setWindowIcon(icon_filename)
 
         if isinstance(self.__menubar, QMenuBar):
-            self.__topTitleBar = TitleBar(self.__menubar, text=title, font=font, icon_filename=icon_filename,
-                                          align=align)
+            self.__topTitleBar = TopTitleBarWidget(self.__menubar, text=title, font=font, icon_filename=icon_filename,
+                                                   align=align)
             self.__menubar.removeEventFilter(self)
         else:
-            self.__topTitleBar = TitleBar(self.__widget, text=title, font=font, icon_filename=icon_filename,
-                                          align=align)
+            self.__topTitleBar = TopTitleBarWidget(self.__widget, text=title, font=font, icon_filename=icon_filename,
+                                                   align=align)
         self.__topTitleBar.installEventFilter(self)
         self.__topTitleBar.setObjectName('navWidget')
         if bottom_separator:
@@ -277,9 +309,6 @@ class Window(BaseWindow):
 
         self.setPressToMove(False)
 
-        # Set app title
-        self.setWindowTitle(title)
-
     def getCornerWidget(self):
         return self.__menubar.cornerWidget()
 
@@ -291,10 +320,19 @@ class Window(BaseWindow):
         self.__minimizeBtn = self.__btnWidget.getMinimizedBtn()
         self.__maximizeBtn = self.__btnWidget.getMaximizedBtn()
         self.__closeBtn = self.__btnWidget.getCloseBtn()
+        self.__fixBtn = self.__btnWidget.getFixBtn()
 
         self.__minimizeBtn.clicked.connect(self.showMinimized)
         self.__maximizeBtn.clicked.connect(self.__showNormalOrMaximized)
         self.__closeBtn.clicked.connect(self.close)
+        self.__fixBtn.clicked.connect(self.fix)
+
+    def fix(self, f):
+        if f:
+            self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        else:
+            self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
+        self.show()
 
     def getInnerWidget(self):
         return self.__widget
