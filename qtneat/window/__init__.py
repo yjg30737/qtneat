@@ -6,4 +6,5 @@ from .toolBar import ToolBar
 from .cornerWidget import CornerWidget
 from .macCornerWidget import MacCornerWidget
 from .windowsCornerWidget import WindowsCornerWidget
+from .transparentCentralWidgetWindow import TransparentCentralWidgetWindow
 from .icons import *
