@@ -1,6 +1,8 @@
 # qtneat
 <b>DON'T USE IT. I'M STILL WORKING</b>
 
+don't even care about this. It will take really long time like Toby Fox making Undertale.
+
 Set the Qt frameless titlebar/theme easily
 
 This is for... me.
