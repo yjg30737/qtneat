@@ -3,6 +3,10 @@
 
 Set the Qt frameless titlebar/theme easily
 
+This is for... me.
+
+or someone who want to use this..
+
 ## Requirements
 * PyQt5 >= 5.8
 
